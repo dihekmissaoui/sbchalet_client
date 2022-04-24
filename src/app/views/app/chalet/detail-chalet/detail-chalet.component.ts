@@ -28,7 +28,6 @@ export class DetailChaletComponent implements OnInit {
   bsInlineValue = new Date();
   bsInlineRangeValue: Date[] = [];
   maxDate = new Date();
-  test: any;
 
   startDate: Date;
   endDate: Date;
@@ -37,6 +36,7 @@ export class DetailChaletComponent implements OnInit {
   galleryImages: NgxGalleryImage[];
 
   datesDisabled = [];
+  minDate = new Date();
 
   constructor(
     private chaletService: ChaletService,
@@ -86,22 +86,22 @@ export class DetailChaletComponent implements OnInit {
   }
 
   saveReservation(): void {
-    console.log('clicked');
+    
 
     const reservation: IReservation = {
-      dateDeDebut:  this.startDate,
+      dateDeDebut: this.startDate,
       dateDeDefin: this.endDate,
       chalet: this.chalet
     }
     this.getDaysArray(this.startDate, this.endDate).every((item) =>
-          this.datesDisabled.push(item)
-        );
+      this.datesDisabled.push(item)
+    );
 
     // this.reservationService.save(reservation).subscribe(res => {
     //   console.log("result", res);
     // })
   }
- 
+
 
   played(event): void { }
   initGalleryOptions() {
@@ -131,13 +131,26 @@ export class DetailChaletComponent implements OnInit {
   }
   onValueChange($event) {
     if ($event) {
-      this.test = $event;
       const datesArray = $event.toString().split(",");
-      
-      // this.startDate = datesArray[0];
       this.startDate = new Date(this.datePipe.transform(datesArray[0], 'MM/dd/yyyy'));
       this.endDate = new Date(this.datePipe.transform(datesArray[1], 'MM/dd/yyyy'));
       this.bsInlineRangeValue = $event;
+
+      // popup erreur si range choisis contient des dates disabled
+      const selectedDates = this.getDaysArray(this.startDate, this.endDate);
+
+      let value = false;
+
+      selectedDates.forEach(selected=>{
+        this.datesDisabled.forEach(disabled=>{
+          const d = new Date(disabled);
+          const s = new Date(selected);
+          if(d.getFullYear() == s.getFullYear() &&  d.getMonth() == s.getMonth() && d.getDay() == s.getDay() )
+            value = true;
+        })  
+      })
+      console.log('value', value);      
+
     }
   }
 
