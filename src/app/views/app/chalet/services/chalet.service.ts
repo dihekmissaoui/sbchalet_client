@@ -12,7 +12,7 @@ export class ChaletService {
   getAll(): Observable<any> {
     return this.httpClient.get(`${environment.serverUrl}/api/chalet/page-and-sort`);
   }
-  getById(id_chalet: string): Observable<any>{
-    return this.httpClient.get(`${environment.serverUrl}/api/chalet/${id_chalet}`)
+  getById(id: string): Observable<any>{
+    return this.httpClient.get(`${environment.serverUrl}/api/chalet/${id}`)
   }
 }

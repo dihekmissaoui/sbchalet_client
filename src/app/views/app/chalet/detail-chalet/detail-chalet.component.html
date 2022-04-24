@@ -54,7 +54,10 @@
         >
           <div class="row">
             <div class="col-12 text-right">
+              <br>
               <button
+                [disabled]="bsInlineRangeValue && bsInlineRangeValue?.length===0"
+                (click)="saveReservation()"
                 type="button"
                 class="btn btn-primary btn-lg mb-1 float-right"
               >
@@ -92,9 +95,9 @@
             <div class="w-100">
               <bs-daterangepicker-inline
                 [bsValue]="bsInlineRangeValue"
-                (bsValueChange)="onValueChange($event)"
                 [datesDisabled]="datesDisabled"
                 [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }"
+                (bsValueChange)="onValueChange($event)"
               >
               </bs-daterangepicker-inline>
             </div>

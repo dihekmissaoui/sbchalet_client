@@ -11,6 +11,7 @@ import { ComponentsChartModule } from 'src/app/components/charts/components.char
 import { FormsContainersModule } from 'src/app/containers/forms/forms.containers.module';
 import { LayoutContainersModule } from 'src/app/containers/layout/layout.containers.module';
 import { PagesContainersModule } from 'src/app/containers/pages/pages.containers.module';
+import { ReservationService } from 'src/app/shared/reservation.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ChaletRoutingModule } from './chalet-routing.module';
 import { DetailChaletComponent } from './detail-chalet/detail-chalet.component';
@@ -49,6 +50,6 @@ import { ListChaletComponent } from './list-chalet/list-chalet.component';
     NgxGalleryModule,
     BsDatepickerModule.forRoot(),
   ],
-  providers: [DatePipe]
+  providers: [DatePipe, ReservationService]
 })
 export class ChaletModule { }

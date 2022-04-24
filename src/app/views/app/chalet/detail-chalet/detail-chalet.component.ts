@@ -13,6 +13,8 @@ import { frLocale } from "ngx-bootstrap/locale";
 import { IChalet } from "src/app/model/chalet.model";
 import { DatePipe } from "@angular/common";
 import { Image } from "src/app/model/image.model";
+import { ReservationService } from "src/app/shared/reservation.service";
+import { IReservation } from "src/app/model/reservation.model";
 
 @Component({
   selector: "app-detail-chalet",
@@ -22,10 +24,9 @@ import { Image } from "src/app/model/image.model";
 export class DetailChaletComponent implements OnInit {
   chalet: IChalet;
   images: string[];
-  form: FormGroup;
 
   bsInlineValue = new Date();
-  bsInlineRangeValue: Date[];
+  bsInlineRangeValue: Date[] = [];
   maxDate = new Date();
   test: any;
 
@@ -41,6 +42,7 @@ export class DetailChaletComponent implements OnInit {
     private chaletService: ChaletService,
     private route: ActivatedRoute,
     private localeService: BsLocaleService,
+    private reservationService: ReservationService,
     private datePipe: DatePipe
   ) {
     this.initDateRangePicker();
@@ -50,7 +52,6 @@ export class DetailChaletComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.initDatePickerForm();
     this.initDetailPage();
     this.initGalleryOptions();
   }
@@ -59,7 +60,7 @@ export class DetailChaletComponent implements OnInit {
 
   }
 
-  updateItems(): void {}
+  updateItems(): void { }
 
   initDetailPage() {
     const id = this.route.snapshot.params?.id;
@@ -83,13 +84,26 @@ export class DetailChaletComponent implements OnInit {
       });
     });
   }
-  initDatePickerForm() {
-    this.form = new FormGroup({
-      basicDate: new FormControl(new Date()),
-    });
-  }
 
-  played(event): void {}
+  saveReservation(): void {
+    console.log('clicked');
+
+    const reservation: IReservation = {
+      dateDeDebut:  this.startDate,
+      dateDeDefin: this.endDate,
+      chalet: this.chalet
+    }
+    this.getDaysArray(this.startDate, this.endDate).every((item) =>
+          this.datesDisabled.push(item)
+        );
+
+    // this.reservationService.save(reservation).subscribe(res => {
+    //   console.log("result", res);
+    // })
+  }
+ 
+
+  played(event): void { }
   initGalleryOptions() {
     this.galleryOptions = [
       {
@@ -119,10 +133,15 @@ export class DetailChaletComponent implements OnInit {
     if ($event) {
       this.test = $event;
       const datesArray = $event.toString().split(",");
-      this.startDate = datesArray[0];
-      this.endDate = datesArray[1];
+      
+      // this.startDate = datesArray[0];
+      this.startDate = new Date(this.datePipe.transform(datesArray[0], 'MM/dd/yyyy'));
+      this.endDate = new Date(this.datePipe.transform(datesArray[1], 'MM/dd/yyyy'));
+      this.bsInlineRangeValue = $event;
     }
   }
+
+
   private getDaysArray(s, e) {
     for (
       var a = [], d = new Date(s);

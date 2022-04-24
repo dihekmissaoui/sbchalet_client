@@ -1,5 +1,8 @@
+import { IChalet } from "./chalet.model";
+
 export interface IReservation {
   idResarvation?: number;
-  dateDeDebut?: string;
-  dateDeDefin?: string;
+  dateDeDebut?: Date;
+  dateDeDefin?: Date;
+  chalet?: IChalet
 }
