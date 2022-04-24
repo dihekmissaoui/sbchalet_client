@@ -1,7 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
-import { BsLocaleService } from "ngx-bootstrap";
+import { BsLocaleService, BsModalRef, BsModalService } from "ngx-bootstrap";
 import {
   NgxGalleryAnimation,
   NgxGalleryImage,
@@ -38,12 +38,23 @@ export class DetailChaletComponent implements OnInit {
   datesDisabled = [];
   minDate = new Date();
 
+  reservationError = false;
+
+  modalRef: BsModalRef;
+  config = {
+    animated: true
+  };
+
+  isLoading: boolean = false;
+
+
   constructor(
     private chaletService: ChaletService,
     private route: ActivatedRoute,
     private localeService: BsLocaleService,
     private reservationService: ReservationService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private modalService: BsModalService
   ) {
     this.initDateRangePicker();
 
@@ -63,7 +74,9 @@ export class DetailChaletComponent implements OnInit {
   updateItems(): void { }
 
   initDetailPage() {
+    this.isLoading = true;
     const id = this.route.snapshot.params?.id;
+  
     this.chaletService.getById(id).subscribe((res: any) => {
       this.chalet = res;
       this.galleryImages = this.chalet.images.map((item: Image, index) => {
@@ -74,14 +87,16 @@ export class DetailChaletComponent implements OnInit {
           url: `data:${item.fileType};base64,${item.data}`,
         };
       });
-
-      this.chalet.reservations.forEach((item) => {
-        const dd = item.dateDeDebut;
-        const df = item.dateDeDefin;
-        this.getDaysArray(dd, df).every((item) =>
-          this.datesDisabled.push(item)
-        );
-      });
+      setTimeout(() => {
+        this.chalet.reservations.forEach((item) => {
+          const dd = item.dateDeDebut;
+          const df = item.dateDeDefin;
+          this.getDaysArray(dd, df).every((item) =>
+            this.datesDisabled.push(item)
+          );
+        });
+        this.isLoading = false;
+      }, 1000);
     });
   }
 
@@ -139,22 +154,33 @@ export class DetailChaletComponent implements OnInit {
       // popup erreur si range choisis contient des dates disabled
       const selectedDates = this.getDaysArray(this.startDate, this.endDate);
 
-      let value = false;
+      
 
       selectedDates.forEach(selected=>{
         this.datesDisabled.forEach(disabled=>{
           const d = new Date(disabled);
           const s = new Date(selected);
           if(d.getFullYear() == s.getFullYear() &&  d.getMonth() == s.getMonth() && d.getDay() == s.getDay() )
-            value = true;
+            this.reservationError = true;
         })  
       })
-      console.log('value', value);      
+      console.log('this.reservationError', this.reservationError);      
+      if(this.reservationError){
+        const modal = document.getElementById('modal');
+        modal.click();
+      }
 
     }
   }
 
-
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, this.config);
+  }
+  closeModal(): void {
+    this.reservationError = false;
+    this.bsInlineRangeValue = [];
+    this.modalRef.hide();
+  }
   private getDaysArray(s, e) {
     for (
       var a = [], d = new Date(s);
