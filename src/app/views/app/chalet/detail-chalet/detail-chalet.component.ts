@@ -29,8 +29,8 @@ export class DetailChaletComponent implements OnInit {
   bsInlineRangeValue: Date[] = [];
   maxDate = new Date();
 
-  startDate: Date;
-  endDate: Date;
+  selectedStartDate: Date;
+  selectedEndDate: Date;
 
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
@@ -76,7 +76,7 @@ export class DetailChaletComponent implements OnInit {
   initDetailPage() {
     this.isLoading = true;
     const id = this.route.snapshot.params?.id;
-  
+
     this.chaletService.getById(id).subscribe((res: any) => {
       this.chalet = res;
       this.galleryImages = this.chalet.images.map((item: Image, index) => {
@@ -101,24 +101,17 @@ export class DetailChaletComponent implements OnInit {
   }
 
   saveReservation(): void {
-    
+
 
     const reservation: IReservation = {
-      dateDeDebut: this.startDate,
-      dateDeDefin: this.endDate,
+      dateDeDebut: this.selectedStartDate,
+      dateDeDefin: this.selectedEndDate,
       chalet: this.chalet
     }
-    this.getDaysArray(this.startDate, this.endDate).every((item) =>
+    this.getDaysArray(this.selectedStartDate, this.selectedEndDate).every((item) =>
       this.datesDisabled.push(item)
     );
-
-    // this.reservationService.save(reservation).subscribe(res => {
-    //   console.log("result", res);
-    // })
   }
-
-
-  played(event): void { }
   initGalleryOptions() {
     this.galleryOptions = [
       {
@@ -147,39 +140,59 @@ export class DetailChaletComponent implements OnInit {
   onValueChange($event) {
     if ($event) {
       const datesArray = $event.toString().split(",");
-      this.startDate = new Date(this.datePipe.transform(datesArray[0], 'MM/dd/yyyy'));
-      this.endDate = new Date(this.datePipe.transform(datesArray[1], 'MM/dd/yyyy'));
+      this.selectedStartDate = new Date(this.datePipe.transform(datesArray[0], 'MM/dd/yyyy'));
+      this.selectedEndDate = new Date(this.datePipe.transform(datesArray[1], 'MM/dd/yyyy'));
       this.bsInlineRangeValue = $event;
 
-      // popup erreur si range choisis contient des dates disabled
-      const selectedDates = this.getDaysArray(this.startDate, this.endDate);
+      this.checkReservationError();
 
-      
 
-      selectedDates.forEach(selected=>{
-        this.datesDisabled.forEach(disabled=>{
-          const d = new Date(disabled);
-          const s = new Date(selected);
-          if(d.getFullYear() == s.getFullYear() &&  d.getMonth() == s.getMonth() && d.getDay() == s.getDay() )
-            this.reservationError = true;
-        })  
+    }
+  }
+  checkReservationError() {
+    const selectedDates = this.getDaysArray(this.selectedStartDate, this.selectedEndDate);
+
+    console.log('selected Dates: ', selectedDates);
+    console.log('disbaled dates:', this.datesDisabled);
+
+
+
+    // this.reservationError = this.datesDisabled.some(s=> selectedDates.includes(s));
+
+    selectedDates.forEach(selected => {
+      this.datesDisabled.forEach(disabled => {
+        const d = new Date(disabled);
+        const s = new Date(selected);
+        if (d.getFullYear() == s.getFullYear() && d.getMonth() == s.getMonth() && d.getDay() == s.getDay()) {
+          this.reservationError = true;
+        }
       })
-      console.log('this.reservationError', this.reservationError);      
-      if(this.reservationError){
-        const modal = document.getElementById('modal');
-        modal.click();
-      }
-
+    })
+    console.log('this.reservationError', this.reservationError);
+    if (this.reservationError) {
+      this.resetSelectedDates();
+      const modal = document.getElementById('modal');
+      modal.click();
     }
   }
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, this.config);
+    this.reservationError = false;
+    this.bsInlineRangeValue = [];
+
+    this.resetSelectedDates();
   }
   closeModal(): void {
     this.reservationError = false;
     this.bsInlineRangeValue = [];
     this.modalRef.hide();
+    this.resetSelectedDates();
+  }
+
+  resetSelectedDates() {
+    this.selectedStartDate = undefined;
+    this.selectedEndDate = undefined;
   }
   private getDaysArray(s, e) {
     for (
