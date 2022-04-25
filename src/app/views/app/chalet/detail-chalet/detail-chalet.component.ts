@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { BsLocaleService, BsModalRef, BsModalService } from "ngx-bootstrap";
 import {
   NgxGalleryAnimation,
@@ -15,6 +15,7 @@ import { DatePipe } from "@angular/common";
 import { Image } from "src/app/model/image.model";
 import { ReservationService } from "src/app/shared/reservation.service";
 import { IReservation } from "src/app/model/reservation.model";
+import { SharedObjectService } from "src/app/shared/shared-object.service";
 
 @Component({
   selector: "app-detail-chalet",
@@ -38,7 +39,7 @@ export class DetailChaletComponent implements OnInit {
   datesDisabled = [];
   minDate = new Date();
 
-  reservationError = false;
+reservationError = false;
 
   modalRef: BsModalRef;
   config = {
@@ -54,7 +55,9 @@ export class DetailChaletComponent implements OnInit {
     private localeService: BsLocaleService,
     private reservationService: ReservationService,
     private datePipe: DatePipe,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private sharedObject: SharedObjectService,
+    private router: Router
   ) {
     this.initDateRangePicker();
 
@@ -100,17 +103,20 @@ export class DetailChaletComponent implements OnInit {
     });
   }
 
-  saveReservation(): void {
-
-
+  reserver(): void {
     const reservation: IReservation = {
       dateDeDebut: this.selectedStartDate,
       dateDeDefin: this.selectedEndDate,
       chalet: this.chalet
     }
+    this.sharedObject.changeChalet(this.chalet);
+    this.sharedObject.changeReservation(reservation);
+
     this.getDaysArray(this.selectedStartDate, this.selectedEndDate).every((item) =>
       this.datesDisabled.push(item)
     );
+    this.router.navigate([`/app/reservation/new`]);
+
   }
   initGalleryOptions() {
     this.galleryOptions = [
@@ -171,7 +177,7 @@ export class DetailChaletComponent implements OnInit {
     console.log('this.reservationError', this.reservationError);
     if (this.reservationError) {
       this.resetSelectedDates();
-      const modal = document.getElementById('modal');
+      const modal = document.getElementById('modal-error-selected-dates');
       modal.click();
     }
   }

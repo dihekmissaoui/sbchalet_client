@@ -1,4 +1,4 @@
-<button id="modal" type="button" hidden class="btn btn-primary" (click)="openModal(template)">{{'modal.open-modal' |
+<button id="modal-error-selected-dates" type="button" hidden class="btn btn-primary" (click)="openModal(template)">{{'modal.open-modal' |
   translate}}</button>
 <ng-template #template>
   <div class="modal-header">
@@ -26,7 +26,7 @@
   <div class="col-12">
     <div>
       <h1>Détails Chalet</h1>
-      <div class="top-right-button-container">
+      <!-- <div class="top-right-button-container">
         <div dropdown>
           <button dropdownToggle type="button" class="btn btn-outline-primary btn-lg flex-grow-1 dropdown-toggle">
             {{ "pages.actions" | translate }} <span class="caret"></span>
@@ -40,7 +40,7 @@
             </li>
           </ul>
         </div>
-      </div>
+      </div> -->
       <app-breadcrumb></app-breadcrumb>
       <div class="separator mb-5"></div>
     </div>
@@ -69,7 +69,7 @@
           <div class="row">
             <div class="col-12 text-right">
               <br>
-              <button [disabled]="bsInlineRangeValue && bsInlineRangeValue?.length===0" (click)="saveReservation()"
+              <button [disabled]="bsInlineRangeValue && bsInlineRangeValue?.length===0" (click)="reserver()"
                 type="button" class="btn btn-primary btn-lg mb-1 float-right">
                 Reserver
               </button>

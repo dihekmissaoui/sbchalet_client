@@ -118,7 +118,9 @@
     "form-validations": "Form Validations",
     "form-wizard": "Form Wizard",
     "chalet": "Chalet",
-    "chalets": "chalets"
+    "chalets": "chalets",
+    "reservation": "Reservation",
+    "new": "Créer"
   },
   "dashboards": {
     "pending-orders": "Pending Orders",
