@@ -10,54 +10,163 @@
 
   <div class="row">
     <div class="col-12 col-md-12 col-xl-8 offset-xl-2 col-left">
-        <h5 class="mb-4">{{ 'wizard.icons' | translate }}</h5>
-        <div class="card">
+        <h5 class="mb-4">{{ 'wizard.validation' | translate }}</h5>
+        <div class="card mb-5">
           <div class="card-body">
-            <aw-wizard [navBarLayout]="'large-empty-symbols'">
-              <aw-wizard-step stepTitle="Personal Info" style="min-height: 230px;">
+            <aw-wizard #wizard [navBarLayout]="'large-empty-symbols'">
+              <aw-wizard-step stepTitle="Informations personelles" style="min-height: 230px;">
                 <ng-template awWizardStepSymbol><i class="simple-icon-user"></i></ng-template>
-                <div>
-                  <div class="form-group">
-                    <label>{{ 'forms.firstname' | translate }}</label>
-                    <input type="text" class="form-control" name="name">
+                <form #formStep1="ngForm" novalidate>
+                  <div class="form-group tooltip-left-bottom">
+                    <label>Nom</label>
+                    <input type="text" class="form-control" name="nom" ngModel required #nom="ngModel">
+                    <div *ngIf="!nom.valid && formStep1.submitted" class="invalid-tooltip">Le Nom est obligatoire!</div>
                   </div>
-                  <div class="form-group">
-                    <label>{{ 'forms.lastname' | translate }}</label>
-                    <input type="text" class="form-control" name="name">
+                  <div class="form-group tooltip-left-bottom">
+                    <label>Prenom</label>
+                    <input type="text" class="form-control" name="prenom" ngModel required #prenom="ngModel">
+                    <div *ngIf="!prenom.valid && formStep1.submitted" class="invalid-tooltip">Le Prenom est obligatoire!</div>
                   </div>
-                </div>
+                  <div class="form-group tooltip-left-bottom">
+                    <label>{{ 'forms.email' | translate }}</label>
+                    <input type="text" class="form-control" name="email" ngModel required #email="ngModel" email>
+                    <div *ngIf="email?.errors?.required && formStep1.submitted" class="invalid-tooltip">Email est obligatoire!</div>
+                    <div *ngIf="email?.errors?.email && formStep1.submitted" class="invalid-tooltip">Email doit être valide!</div>
+                  </div>
+                </form>
                 <div class="text-center">
                   <button type="button" class="btn btn-primary" awPreviousStep disabled>{{ 'wizard.prev' | translate }}</button>{{" "}}
-                  <button type="button" class="btn btn-primary" awNextStep>{{ 'wizard.next' | translate }}</button>
+                  <button type="button" class="btn btn-primary" (click)="onNextStep1()">{{ 'wizard.next' | translate }}</button>
                 </div>
               </aw-wizard-step>
-              <aw-wizard-step stepTitle="Delivery Location" style="min-height: 230px;">
+        
+              <aw-wizard-step stepTitle="Step 2" style="min-height: 230px;">
                 <ng-template awWizardStepSymbol><i class="simple-icon-location-pin"></i></ng-template>
-                <div>
-                  <div class="form-group">
-                    <label>{{ 'forms.city' | translate }}</label>
-                    <input type="text" class="form-control" name="name">
-                  </div>
-                  <div class="form-group">
-                    <label>{{ 'forms.address' | translate }}</label>
-                    <textarea class="form-control" rows="2"></textarea>
-                  </div>
-                </div>
+                <form #formStep2="ngForm" novalidate>
+                      <div class="row">
+                        <div class="col-12 text-center">
+                          <div class="card mb-4 " >
+                            <div class="card-body">
+                              <p class="list-item-heading mb-4">Détails du chalet</p>
+                              <p class="text-muted text-small mb-2">Description</p>
+                              <p class="mb-3">{{ chalet.description }}</p>
+                              
+                              <p class="text-muted text-small mb-2">Adresse</p>
+                              <p class="mb-3">{{chalet?.adresse +", " +chalet?.codeZip +", " +chalet?.ville +", " +chalet?.etat}}</p>
+
+                              <p class="text-muted text-small mb-2">Description</p>
+                              <p class="mb-3">{{ chalet.description }}</p>
+                              <!-- <div>
+                                <p class="d-sm-inline-block mb-1">
+                                  <span
+                                    [class]="'badge badge-pill badge-'+'blue'">{{ 'currentSurvey.label' }}</span>
+                                </p>
+                                <p class="d-sm-inline-block mb-1"></p>
+                              </div> -->
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                </form>
                 <div class="text-center">
                   <button type="button" class="btn btn-primary" awPreviousStep>{{ 'wizard.prev' | translate }}</button>{{" "}}
-                  <button type="button" class="btn btn-primary" awNextStep>{{ 'wizard.next' | translate }}</button>
+                  <button type="button" class="btn btn-primary" (click)="onNextStep2()">{{ 'wizard.next' | translate }}</button>
                 </div>
               </aw-wizard-step>
+        
+              <aw-wizard-step stepTitle="Vérification de données" style="min-height: 230px;">
+                <ng-template awWizardStepSymbol><i class="iconsminds-check"></i></ng-template>
+                <div class="row">
+                  <div class="col-12 text-center">
+                    <div class="card mb-4 " >
+                      <div class="card-body">
+                        <p class="list-item-heading mb-4">Détails du chalet</p>
+                        <p class="text-muted text-small mb-2">Description</p>
+                        <p class="mb-3">{{ chalet.description }}</p>
+                        
+                        <p class="text-muted text-small mb-2">Adresse</p>
+                        <p class="mb-3">{{chalet?.adresse +", " +chalet?.codeZip +", " +chalet?.ville +", " +chalet?.etat}}</p>
+
+                        <p class="text-muted text-small mb-2">Description</p>
+                        <p class="mb-3">{{ chalet.description }}</p>
+                        <!-- <div>
+                          <p class="d-sm-inline-block mb-1">
+                            <span
+                              [class]="'badge badge-pill badge-'+'blue'">{{ 'currentSurvey.label' }}</span>
+                          </p>
+                          <p class="d-sm-inline-block mb-1"></p>
+                        </div> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 text-center">
+                    <div class="card mb-4 " >
+                      <div class="card-body">
+                        <p class="list-item-heading mb-4">Détails de la reservation</p>
+                        <p class="text-muted text-small mb-2">Date de d'arrivée</p>
+                        <p class="mb-3">{{ reservation.dateDeDebut | date: 'short' }}</p>
+                        
+                        <p class="text-muted text-small mb-2">Date de de fin de séjour </p>
+                        <p class="mb-3">{{ reservation.dateDeDefin | date: 'short' }}</p>
+                        
+                        <p class="text-muted text-small mb-2">Nombre de nuités </p>
+                        <p class="mb-3">{{ nbNuites }}</p>
+
+                        <p class="text-muted text-small mb-2">Prix Total </p>
+                        <p class="mb-3">{{ totalPrix | currency }}</p>
+
+                        <!-- <div>
+                          <p class="d-sm-inline-block mb-1">
+                            <span
+                              [class]="'badge badge-pill badge-'+'blue'">{{ 'currentSurvey.label' }}</span>
+                          </p>
+                          <p class="d-sm-inline-block mb-1"></p>
+                        </div> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- <form #formStep3="ngForm" novalidate>
+                  <div class="form-group tooltip-left-bottom">
+                    <label>{{ 'forms.password' | translate }}</label>
+                    <input type="password" class="form-control" name="password" ngModel required #password="ngModel" minlength="8"
+                      pattern="([A-Za-z]+[0-9]|[0-9]+[A-Za-z])[A-Za-z0-9]*">
+                    <div *ngIf="password?.errors?.required && formStep3.submitted" class="invalid-tooltip">Password is required!
+                    </div>
+                    <div *ngIf="password?.errors?.pattern && formStep3.submitted" class="invalid-tooltip">Paswsword must contain at
+                      least a letter and a number!</div>
+                    <div *ngIf="!password?.errors?.pattern && password?.errors?.minlength && formStep3.submitted"
+                      class="invalid-tooltip">Paswsword must contain at least 8 characters!</div>
+                  </div>
+                </form> -->
+                <div class="text-center">
+                  <button type="button" class="btn btn-primary" awPreviousStep>{{ 'wizard.prev' | translate }}</button>{{" "}}
+                  <button type="button" class="btn btn-primary" (click)="onNextStep3()">{{ 'wizard.next' | translate }}</button>
+                </div>
+              </aw-wizard-step>
+        
               <aw-wizard-completion-step stepTitle="{{ 'wizard.done' | translate }}" style="min-height: 230px;">
+                
                 <ng-template awWizardStepSymbol><i class="simple-icon-check"></i></ng-template>
                 <div class="text-center complete-message-centered">
-                  <h2 class="mb-2">{{ 'wizard.content-thanks' | translate }}</h2>
-                  <p>{{ 'wizard.registered' | translate }}</p>
+                  <div *ngIf="posting">
+                    <div class="spinner-border text-primary" role="status">
+                    </div>
+                    <div class="mt-3">{{ 'wizard.saving' | translate }}</div>
+                  </div>
+                  <div *ngIf="!posting">
+                    <h2 class="mb-2">{{ 'wizard.content-thanks' | translate }}</h2>
+                    <p>{{ 'wizard.registered' | translate }}</p>
+                    </div>
                 </div>
               </aw-wizard-completion-step>
+        
             </aw-wizard>
           </div>
         </div>
+        
         
       </div>
   </div>

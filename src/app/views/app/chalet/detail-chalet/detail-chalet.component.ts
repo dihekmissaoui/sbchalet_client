@@ -53,7 +53,6 @@ export class DetailChaletComponent implements OnInit {
     private chaletService: ChaletService,
     private route: ActivatedRoute,
     private localeService: BsLocaleService,
-    private reservationService: ReservationService,
     private datePipe: DatePipe,
     private modalService: BsModalService,
     private sharedObject: SharedObjectService,
@@ -104,13 +103,21 @@ export class DetailChaletComponent implements OnInit {
   }
 
   reserver(): void {
-    const reservation: IReservation = {
-      dateDeDebut: this.selectedStartDate,
-      dateDeDefin: this.selectedEndDate,
-      chalet: this.chalet
+    // const reservation: IReservation = {
+    //   dateDeDebut: new Date(this.datePipe.transform(this.selectedStartDate, 'dd/MM/yyyy')),
+    //   dateDeDefin: new Date(this.datePipe.transform(this.selectedEndDate, 'dd/MM/yyyy')),
+    //   chalet: this.chalet
+    // }
+    const res = {
+      dateDeDebut: new Date(this.datePipe.transform(this.selectedStartDate, 'yyyy-MM-dd')),
+      dateDeDefin: new Date(this.datePipe.transform(this.selectedEndDate, 'yyyy-MM-dd')),
     }
+    if (!this.chalet.reservations){
+      this.chalet.reservations = [];
+    }
+    this.chalet.reservations.push(res);
     this.sharedObject.changeChalet(this.chalet);
-    this.sharedObject.changeReservation(reservation);
+    this.sharedObject.changeReservation(res);
 
     this.getDaysArray(this.selectedStartDate, this.selectedEndDate).every((item) =>
       this.datesDisabled.push(item)
@@ -196,9 +203,6 @@ export class DetailChaletComponent implements OnInit {
     this.selectedEndDate = undefined;
   }
 
-  private isInArray(array, value) {
-    return !!array.find(item => { return item.getTime() == value.getTime() });
-  }
 
   private getDaysArray(s, e) {
     for (

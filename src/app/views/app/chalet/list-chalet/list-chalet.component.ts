@@ -69,7 +69,6 @@ export class ListChaletComponent implements OnInit {
     this.orderBy = orderBy;
     this.chaletService.getAll().subscribe(
       (res) => {
-        console.log("res:", res);
         this.isLoading = false;
         (this.data = res.content), (this.totalItem = res.totalElements);
         this.totalPage = res.totalPages;

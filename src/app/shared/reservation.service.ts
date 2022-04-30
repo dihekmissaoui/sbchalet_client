@@ -15,11 +15,14 @@ export class ReservationService {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept':'*/*'
-
     });
     let options = { headers: headers };
 
     return this.httpClient.post(`${environment.serverUrl}/api/reservation`, reservation, options);
+  }
+
+  patch(id: number, payload: IReservation): Observable<IReservation> {
+    return this.httpClient.patch(`${environment.serverUrl}/api/chalet/${id}`, payload);
   }
 
 }

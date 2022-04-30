@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule as FormsModuleAngular, ReactiveFormsModule } from '@angular/forms';
 import { ArchwizardModule } from 'angular-archwizard';
@@ -43,6 +44,7 @@ import { ReservationRoutingModule } from './reservation-routing.module';
     }),
 
     ArchwizardModule
-  ]
+  ],
+  providers: [DatePipe]
 })
 export class ReservationModule { }
