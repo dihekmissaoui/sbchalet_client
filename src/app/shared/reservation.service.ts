@@ -25,4 +25,7 @@ export class ReservationService {
     return this.httpClient.patch(`${environment.serverUrl}/api/chalet/${id}`, payload);
   }
 
+  find(): Observable<IReservation[]>{
+    return this.httpClient.get<IReservation[]>(`${environment.serverUrl}/api/reservation`);
+  }
 }

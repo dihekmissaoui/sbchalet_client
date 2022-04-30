@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule as FormsModuleAngular, ReactiveFormsModule } from '@angular/forms';
 import { ArchwizardModule } from 'angular-archwizard';
 import { HotkeyModule } from 'angular2-hotkeys';
-import { AccordionModule, BsDropdownModule, ModalModule, PaginationModule, RatingModule, TabsModule } from 'ngx-bootstrap';
+import { AccordionModule, BsDropdownModule, CollapseModule, ModalModule, PaginationModule, ProgressbarModule, RatingModule, TabsModule } from 'ngx-bootstrap';
 import { ContextMenuModule } from 'ngx-contextmenu';
 import { ComponentsCardsModule } from 'src/app/components/cards/components.cards.module';
 import { ComponentsCarouselModule } from 'src/app/components/carousel/components.carousel.module';
@@ -14,16 +14,18 @@ import { PagesContainersModule } from 'src/app/containers/pages/pages.containers
 import { SharedModule } from 'src/app/shared/shared.module';
 import { AddReservationComponent } from './add-reservation/add-reservation.component';
 import { ReservationRoutingModule } from './reservation-routing.module';
+import { ListReservationComponent } from './list-reservation/list-reservation.component';
+import { SortablejsModule } from 'ngx-sortablejs';
 
 
 
 
 
 @NgModule({
-  declarations: [AddReservationComponent],
+  declarations: [AddReservationComponent, ListReservationComponent],
   imports: [
-    ReservationRoutingModule,
     SharedModule,
+    ReservationRoutingModule,
     ComponentsCarouselModule,
     LayoutContainersModule,
     PagesContainersModule,
@@ -42,8 +44,11 @@ import { ReservationRoutingModule } from './reservation-routing.module';
     ContextMenuModule.forRoot({
       useBootstrap4: true,
     }),
-
-    ArchwizardModule
+    
+    CollapseModule.forRoot(),
+    SortablejsModule,
+    ProgressbarModule.forRoot(),
+    ArchwizardModule,
   ],
   providers: [DatePipe]
 })
