@@ -62,6 +62,10 @@ onNextStep1() {
   this.user.prenom = this.formStep1.controls.prenom.value;
   this.user.email = this.formStep1.controls.email.value;
   this.user.username = this.user.email.split('@')[0];
+  this.user.password = Math.random().toString(36).slice(-8);
+
+  
+  this.reservation.user = this.user;
   this.sharedObjectService.changeUser(this.user);
 
   this.formStep1.onSubmit(null);
