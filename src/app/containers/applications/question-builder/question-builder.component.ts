@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { IQuestion } from 'src/app/views/app/applications/survey/survey.service';
+// import { IQuestion } from 'src/app/views/app/applications/survey/survey.service';
 
 @Component({
   selector: 'app-question-builder',
@@ -7,7 +7,7 @@ import { IQuestion } from 'src/app/views/app/applications/survey/survey.service'
   styles: []
 })
 export class QuestionBuilderComponent implements OnInit {
-  @Input() question: IQuestion;
+  @Input() question: any;
   @Input() sort = 99;
 
   mode = 'preview';

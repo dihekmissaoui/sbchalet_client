@@ -39,7 +39,7 @@ export class DetailChaletComponent implements OnInit {
   datesDisabled = [];
   minDate = new Date();
 
-reservationError = false;
+  reservationError = false;
 
   modalRef: BsModalRef;
   config = {
@@ -157,28 +157,23 @@ reservationError = false;
   }
   checkReservationError() {
     const selectedDates = this.getDaysArray(this.selectedStartDate, this.selectedEndDate);
+    const selectedDateTime = selectedDates.map(x=>new Date(this.datePipe.transform(x, 'MM/dd/yyyy')).getTime())
+    const datesDisabledTime = this.datesDisabled.map(x=>new Date(this.datePipe.transform(x, 'MM/dd/yyyy')).getTime())
 
-    console.log('selected Dates: ', selectedDates);
-    console.log('disbaled dates:', this.datesDisabled);
-
-
-
-    // this.reservationError = this.datesDisabled.some(s=> selectedDates.includes(s));
-
-    selectedDates.forEach(selected => {
-      this.datesDisabled.forEach(disabled => {
-        const d = new Date(disabled);
-        const s = new Date(selected);
-        if (d.getFullYear() == s.getFullYear() && d.getMonth() == s.getMonth() && d.getDay() == s.getDay()) {
+    
+    selectedDateTime.forEach(selected => {
+      datesDisabledTime.forEach(disabled => {
+        if (selected == disabled) {
           this.reservationError = true;
         }
       })
     })
-    console.log('this.reservationError', this.reservationError);
+
     if (this.reservationError) {
       this.resetSelectedDates();
       const modal = document.getElementById('modal-error-selected-dates');
       modal.click();
+      this.reservationError = false;
     }
   }
 
@@ -200,6 +195,11 @@ reservationError = false;
     this.selectedStartDate = undefined;
     this.selectedEndDate = undefined;
   }
+
+  private isInArray(array, value) {
+    return !!array.find(item => { return item.getTime() == value.getTime() });
+  }
+
   private getDaysArray(s, e) {
     for (
       var a = [], d = new Date(s);
