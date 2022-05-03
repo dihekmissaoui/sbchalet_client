@@ -16,4 +16,6 @@ export interface IReservation {
   status?: string;
   colorStatus?: string;
   chaletId?: number;
+  files?: any,
+  factures?: any[]
 }

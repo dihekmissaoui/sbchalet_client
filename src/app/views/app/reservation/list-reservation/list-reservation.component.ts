@@ -30,7 +30,11 @@ export class ListReservationComponent implements OnInit {
   reservations: IReservation[];
 
   isLoadingReservation: boolean = false;
-
+  pendingReservationsLength = 0;
+  validatedReservationsLength = 0;
+  partiallyPaidReservationsLength = 0;
+  paidReservationsLength = 0;
+  confirmedReservationsLength = 0;
   constructor(private reservationService: ReservationService, private router: Router) { }
 
   ngOnInit(): void {
@@ -53,8 +57,16 @@ export class ListReservationComponent implements OnInit {
           colorStatus: this.getItemStatus(status),
         }
       })
+      this.initSizeOfValidationByStatus();
       this.isLoadingReservation = false;
     })
+  }
+  initSizeOfValidationByStatus() {
+    this.pendingReservationsLength = this.reservations.filter(x => x.status === 'PENDING').length;
+    this.validatedReservationsLength = this.reservations.filter(x => x.status === 'VALIDATED').length;
+    this.partiallyPaidReservationsLength = this.reservations.filter(x => x.status === 'PARIALLY_PAID').length;
+    this.paidReservationsLength = this.reservations.filter(x => x.status === 'PAID').length;
+    this.confirmedReservationsLength = this.reservations.filter(x => x.status === 'CONFIRMED').length;
   }
   getItemStatus(status: string): string {
     switch (status) {
@@ -101,8 +113,8 @@ export class ListReservationComponent implements OnInit {
     }
     this.setSelectAllState();
   }
-  goToDetail(id: number){
-    this.router.navigate([`/app/reservation/`+id]);
+  goToDetail(id: number) {
+    this.router.navigate([`/app/reservation/` + id]);
   }
 
 }

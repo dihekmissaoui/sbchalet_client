@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 import {
   NgxGalleryAnimation,
   NgxGalleryImage,
-  NgxGalleryOptions,
+  NgxGalleryOptions
 } from "ngx-gallery-9";
+import { IAlbum, Lightbox } from 'ngx-lightbox';
+import { carouselData, ICarouselItem } from 'src/app/data/carousels';
 import { IChalet } from 'src/app/model/chalet.model';
+import { Image } from 'src/app/model/image.model';
 import { IReservation } from 'src/app/model/reservation.model';
 import { ReservationService } from 'src/app/shared/reservation.service';
 import { environment } from 'src/environments/environment';
@@ -16,31 +20,50 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./detail-reservation.component.scss']
 })
 export class DetailReservationComponent implements OnInit {
-
+  carouselSettings= {
+    gap: 0,
+    type: 'carousel',
+    peek: { before: 50, after: 50 },
+    perView: 3,
+    breakpoints: { '600': { perView: 1 }, '1000': { perView: 2 } }
+  };
   reservation: IReservation;
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
   changeStatusButtonText: string;
   chalet: IChalet;
+  // ${environment.serverUrl}/uploadMultiFiles?elementId=${this.route.snapshot.params?.id}&partOf=reservation
+  config: DropzoneConfigInterface = {
 
-  config = {
-    url: `${environment.serverUrl}/uploadMultiFiles`,
+    url: `${environment.serverUrl}/uploadFile?elementId=${this.route.snapshot.params?.id}&partOf=reservation`,
     thumbnailWidth: 160,
     // tslint:disable-next-line: max-line-length
     previewTemplate: '<div class="dz-preview dz-file-preview mb-3"><div class="d-flex flex-row "><div class="p-0 w-30 position-relative"><div class="dz-error-mark"><span><i></i></span></div><div class="dz-success-mark"><span><i></i></span></div><div class="preview-container"><img data-dz-thumbnail class="img-thumbnail border-0" /><i class="simple-icon-doc preview-icon" ></i></div></div><div class="pl-3 pt-2 pr-2 pb-1 w-70 dz-details position-relative"><div><span data-dz-name></span></div><div class="text-primary text-extra-small" data-dz-size /><div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div><div class="dz-error-message"><span data-dz-errormessage></span></div></div></div><a href="#/" class="remove" data-dz-remove><i class="glyph-icon simple-icon-trash"></i></a></div>'
-  };
 
-  constructor(private reservationService: ReservationService,
+  };
+  album: IAlbum[];
+
+  constructor(private reservationService: ReservationService, private lightbox: Lightbox,
     private route: ActivatedRoute,) { }
 
   ngOnInit(): void {
-    this.reservationService.getById(this.route.snapshot.params?.id).subscribe(res => {
+    this.initReservationDetail(this.route.snapshot.params?.id);
+    this.initGalleryOptions();
+
+  }
+  initReservationDetail(id) {
+    this.reservationService.getById(id).subscribe(res => {
       this.reservation = res
       this.chalet = res.chalet;
       this.changeStatusButtonText = this.resolveChangeStatusButtonText(this.reservation);
+      this.album = this.reservation.files.map((item: Image, index) => {
+        return {
+          src: `${item.fileName}`,
+          // caption: `data:${item.fileType};base64,${item.data}`,
+          thumb: `data:${item.fileType};base64,${item.data}`,
+        };
+      });
     });
-    this.initGalleryOptions();
-
   }
   resolveChangeStatusButtonText(reservation: IReservation): string {
     switch (reservation.status) {
@@ -85,7 +108,7 @@ export class DetailReservationComponent implements OnInit {
   }
 
   onUploadSuccess(event) {
-    console.log(event);
+    this.initReservationDetail(this.route.snapshot.params?.id);
   }
   initGalleryOptions() {
     this.galleryOptions = [
@@ -112,7 +135,11 @@ export class DetailReservationComponent implements OnInit {
       },
     ];
   }
-  performUpload(){
-    
+  performUpload() {
+
+  }
+
+  openLightbox(index: number): void {
+    this.lightbox.open(this.album, index, { centerVertically: true, positionFromTop: 0, disableScrolling: true, wrapAround: true });
   }
 }

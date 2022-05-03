@@ -106,7 +106,7 @@
 </div>
 <!-- <app-add-new-survey-modal #addNewModalRef></app-add-new-survey-modal> -->
 <app-application-menu>
-    <!-- Left Bar to bec customized -->
+    <!-- Right Bar to bec customized -->
     <perfect-scrollbar class="scroll" [config]="{suppressScrollX: true, wheelPropagation: false}">
         <div class="p-4 h-100">
             <div class="scroll">
@@ -114,14 +114,42 @@
                 <ul class="list-unstyled mb-4">
                     <li class="nav-item">
                         <a href="#">
-                            <i class="simple-icon-reload"></i>{{ 'survey.all-surveys' | translate }}
-                            <span class="float-right">24</span>
+                            <i class="simple-icon-reload"></i>Reservations
+                            <span class="float-right">{{reservations.length}}</span>
+                        </a>
+                    </li>
+
+
+
+
+                    <li class="nav-item">
+                        <a href="#">
+                            <i class="simple-icon-refresh"></i>Pending
+                            <span class="float-right">{{ pendingReservationsLength }}</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="#">
-                            <i class="simple-icon-refresh"></i>{{ 'survey.active-surveys' | translate }}
-                            <span class="float-right">20</span>
+                            <i class="simple-icon-refresh"></i>Validated
+                            <span class="float-right">{{ validatedReservationsLength }}</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#">
+                            <i class="simple-icon-refresh"></i>Partially Paid
+                            <span class="float-right">{{ partiallyPaidReservationsLength }}</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#">
+                            <i class="simple-icon-refresh"></i>Paid
+                            <span class="float-right">{{ paidReservationsLength }}</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#">
+                            <i class="simple-icon-check"></i>Confirmed
+                            <span class="float-right">{{ confirmedReservationsLength }}</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -131,10 +159,11 @@
                         </a>
                     </li>
                 </ul>
+                <!--
                 <p class="text-muted text-small mb-4">
                     {{ 'survey.categories' | translate }}
                 </p>
-                <ul class="list-unstyled mb-5">
+                 <ul class="list-unstyled mb-5">
                     <li>
                         <div class="custom-control custom-checkbox mb-2">
                             <input type="checkbox" class="custom-control-input" id="category1">
@@ -173,6 +202,7 @@
                         </a>
                     </p>
                 </div>
+                 -->
             </div>
         </div>
     </perfect-scrollbar>
