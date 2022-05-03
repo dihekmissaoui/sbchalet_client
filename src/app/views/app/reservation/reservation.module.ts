@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { LOCALE_ID, NgModule } from '@angular/core';
+import { DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule as FormsModuleAngular, ReactiveFormsModule } from '@angular/forms';
 import { ArchwizardModule } from 'angular-archwizard';
 import { HotkeyModule } from 'angular2-hotkeys';
@@ -20,13 +20,20 @@ import { DetailReservationComponent } from './detail-reservation/detail-reservat
 import { ChaletModule } from '../chalet/chalet.module';
 import { NgxGalleryModule } from 'ngx-gallery-9';
 import { DropzoneModule } from 'ngx-dropzone-wrapper';
+import { AddFactureModalComponent } from './facture/add-facture-modal/add-facture-modal.component';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 
 
 
 
 @NgModule({
-  declarations: [AddReservationComponent, ListReservationComponent, DetailReservationComponent],
+  declarations: [
+    AddReservationComponent,
+    ListReservationComponent,
+    DetailReservationComponent,
+    AddFactureModalComponent
+  ],
   imports: [
     SharedModule,
     ReservationRoutingModule,
@@ -48,18 +55,21 @@ import { DropzoneModule } from 'ngx-dropzone-wrapper';
     ContextMenuModule.forRoot({
       useBootstrap4: true,
     }),
-    
+
     CollapseModule.forRoot(),
     SortablejsModule,
     ProgressbarModule.forRoot(),
     ArchwizardModule,
     NgxGalleryModule,
     ChaletModule,
-    DropzoneModule
+    DropzoneModule,
+    NgxDatatableModule,
+    SortablejsModule
   ],
   providers: [
-    DatePipe, 
-    {provide: LOCALE_ID, useValue: 'fr' }
+    DatePipe,
+    { provide: LOCALE_ID, useValue: 'fr' },
+    { provide: DEFAULT_CURRENCY_CODE, useValue: 'EUR' }
 
   ]
 })

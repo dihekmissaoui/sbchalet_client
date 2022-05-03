@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ColumnMode } from '@swimlane/ngx-datatable';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 import {
   NgxGalleryAnimation,
@@ -7,12 +8,12 @@ import {
   NgxGalleryOptions
 } from "ngx-gallery-9";
 import { IAlbum, Lightbox } from 'ngx-lightbox';
-import { carouselData, ICarouselItem } from 'src/app/data/carousels';
 import { IChalet } from 'src/app/model/chalet.model';
 import { Image } from 'src/app/model/image.model';
 import { IReservation } from 'src/app/model/reservation.model';
 import { ReservationService } from 'src/app/shared/reservation.service';
 import { environment } from 'src/environments/environment';
+import { AddFactureModalComponent } from '../facture/add-facture-modal/add-facture-modal.component';
 
 @Component({
   selector: 'app-detail-reservation',
@@ -20,6 +21,8 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./detail-reservation.component.scss']
 })
 export class DetailReservationComponent implements OnInit {
+  @ViewChild('addNewModalRef', { static: true }) addNewModalRef: AddFactureModalComponent;
+  
   carouselSettings= {
     gap: 0,
     type: 'carousel',
@@ -42,20 +45,30 @@ export class DetailReservationComponent implements OnInit {
 
   };
   album: IAlbum[];
-
+  columns = [
+    { prop: 'dateFacture' },
+    { name: 'montant' },
+  ];
+  columnMode = ColumnMode.flex;
+  rows;
+  sommePaye =0;
+  resteTotalApayer: number;
   constructor(private reservationService: ReservationService, private lightbox: Lightbox,
     private route: ActivatedRoute,) { }
 
   ngOnInit(): void {
     this.initReservationDetail(this.route.snapshot.params?.id);
     this.initGalleryOptions();
-
+    
   }
   initReservationDetail(id) {
     this.reservationService.getById(id).subscribe(res => {
       this.reservation = res
       this.chalet = res.chalet;
       this.changeStatusButtonText = this.resolveChangeStatusButtonText(this.reservation);
+      this.rows =  this.reservation.factures;
+      this.sommePaye = this.reservation.factures.reduce((n, {montant}) => n + montant, 0);
+      this.reservation.resteTotalApayer = this.reservation.totalPrix - this.sommePaye
       this.album = this.reservation.files.map((item: Image, index) => {
         return {
           src: `${item.fileName}`,
@@ -141,5 +154,12 @@ export class DetailReservationComponent implements OnInit {
 
   openLightbox(index: number): void {
     this.lightbox.open(this.album, index, { centerVertically: true, positionFromTop: 0, disableScrolling: true, wrapAround: true });
+  }
+  showAddNewModal() {
+    this.addNewModalRef.show();
+  }
+  getSavedFacture($event): void {
+    this.initReservationDetail(this.route.snapshot.params?.id);
+    this.reservation.factures.push($event);
   }
 }

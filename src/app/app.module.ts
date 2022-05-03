@@ -28,7 +28,8 @@ registerLocaleData(localeFr, 'fr');
     AngularFireModule.initializeApp(environment.firebase)
   ],
   declarations: [
-    AppComponent
+    AppComponent,
+  
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,4 +1,5 @@
 import { IChalet } from "./chalet.model";
+import { IFacture } from "./facture.model";
 import { IUser } from "./user.model";
 
 export interface IReservation {
@@ -17,5 +18,6 @@ export interface IReservation {
   colorStatus?: string;
   chaletId?: number;
   files?: any,
-  factures?: any[]
+  factures?: IFacture[]
+  resteTotalApayer?: number;
 }

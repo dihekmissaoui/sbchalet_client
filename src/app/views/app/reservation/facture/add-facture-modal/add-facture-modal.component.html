@@ -1,0 +1,28 @@
+<ng-template #template>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">{{'todo.add-new-title' | translate}}</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <ng-container  *ngIf="!isLoading">
+            <label> Montant total à payer : {{montantTotal | currency:"symbol"}}</label>
+            <br>
+            <label> Reste à payer : {{ (resteTotalApayer) | currency:"symbol"}}</label>
+        </ng-container>
+        <div class="text-center" *ngIf="isLoading">
+            <div class="spinner-border text-primary" role="status" >
+            </div>
+          </div>
+        <div >
+            <label>Montant à payer</label>
+            <input type="number" class="form-control" placeholder="" [(ngModel)]="facture.montant">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary"
+            (click)="modalRef.hide()">{{'todo.cancel' | translate }}</button>
+        <button type="submit" (click)="save()" class="btn btn-primary float-right">{{ 'todo.submit' | translate}}</button>
+    </div>
+</ng-template>
