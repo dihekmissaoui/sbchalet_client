@@ -53,6 +53,7 @@ import { ListChaletComponent } from './list-chalet/list-chalet.component';
     UiModalsContainersModule
     
   ],
-  providers: [DatePipe, ReservationService]
+  providers: [DatePipe, ReservationService],
+  exports: [DetailChaletComponent]
 })
 export class ChaletModule { }

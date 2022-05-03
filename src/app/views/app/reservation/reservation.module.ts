@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule as FormsModuleAngular, ReactiveFormsModule } from '@angular/forms';
 import { ArchwizardModule } from 'angular-archwizard';
 import { HotkeyModule } from 'angular2-hotkeys';
@@ -16,13 +16,17 @@ import { AddReservationComponent } from './add-reservation/add-reservation.compo
 import { ReservationRoutingModule } from './reservation-routing.module';
 import { ListReservationComponent } from './list-reservation/list-reservation.component';
 import { SortablejsModule } from 'ngx-sortablejs';
+import { DetailReservationComponent } from './detail-reservation/detail-reservation.component';
+import { ChaletModule } from '../chalet/chalet.module';
+import { NgxGalleryModule } from 'ngx-gallery-9';
+import { DropzoneModule } from 'ngx-dropzone-wrapper';
 
 
 
 
 
 @NgModule({
-  declarations: [AddReservationComponent, ListReservationComponent],
+  declarations: [AddReservationComponent, ListReservationComponent, DetailReservationComponent],
   imports: [
     SharedModule,
     ReservationRoutingModule,
@@ -49,7 +53,14 @@ import { SortablejsModule } from 'ngx-sortablejs';
     SortablejsModule,
     ProgressbarModule.forRoot(),
     ArchwizardModule,
+    NgxGalleryModule,
+    ChaletModule,
+    DropzoneModule
   ],
-  providers: [DatePipe]
+  providers: [
+    DatePipe, 
+    {provide: LOCALE_ID, useValue: 'fr' }
+
+  ]
 })
 export class ReservationModule { }

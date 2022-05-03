@@ -42,7 +42,7 @@ export class AddReservationComponent implements OnInit {
     })
     this.sharedObjectService.currentReservation.subscribe(res => {
       this.reservation = res;
-      this.reservation.chalet = this.chalet.id;
+      this.reservation.chaletId = this.chalet.id;
 
       const dd = new Date(this.datePipe.transform(this.reservation.dateDeDebut, 'MM/dd/yyyy'));
       const df = new Date(this.datePipe.transform(this.reservation.dateDeDefin, 'MM/dd/yyyy'));

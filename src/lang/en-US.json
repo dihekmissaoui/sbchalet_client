@@ -120,7 +120,8 @@
     "chalet": "Chalet",
     "chalets": "chalets",
     "reservation": "Reservation",
-    "new": "Créer"
+    "new": "Créer",
+    "reservations": "Reservations"
   },
   "dashboards": {
     "pending-orders": "Pending Orders",

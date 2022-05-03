@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { IReservation } from 'src/app/model/reservation.model';
 import { ReservationService } from 'src/app/shared/reservation.service';
 
@@ -19,7 +20,7 @@ export class ListReservationComponent implements OnInit {
   itemOptionsPerPage = [5, 10, 20];
   itemOrder = 'Title';
   itemOptionsOrders = ['Title', 'Category', 'Status', 'Label'];
-  
+
   selectAllState = '';
   selected = [];
   surveyItems: any[] = [];
@@ -28,23 +29,47 @@ export class ListReservationComponent implements OnInit {
 
   reservations: IReservation[];
 
-  isLoadingReservation:boolean = false;
+  isLoadingReservation: boolean = false;
 
-  constructor(private reservationService: ReservationService) { }
+  constructor(private reservationService: ReservationService, private router: Router) { }
 
   ngOnInit(): void {
     this.isLoadingReservation = true;
-    // setTimeout(() => {
-      
-      this.reservationService.find().subscribe(res=>{
-        this.reservations = res;
-        this.isLoadingReservation= false;
-        console.log('res:', res);
-        
+    this.reservationService.find().subscribe(res => {
+      this.reservations = res;
+      this.reservations = this.reservations.map(res => {
+        return {
+          id: res.id,
+          dateDeDebut: res.dateDeDebut,
+          dateDeDefin: res.dateDeDefin,
+          chalet: res.chalet,
+          nbNuites: res.nbNuites,
+          totalPrix: res.totalPrix,
+          user: res.user,
+          nbAdultes: res.nbAdultes,
+          nbEnfant: res.nbEnfant,
+          nbAnimal: res.nbAnimal,
+          status: res.status,
+          colorStatus: this.getItemStatus(status),
+        }
       })
-    // }, 5000);
-      
-  
+      this.isLoadingReservation = false;
+    })
+  }
+  getItemStatus(status: string): string {
+    switch (status) {
+      case "PENDING":
+        return "primary"
+      case "VALIDATED":
+        return "secondary"
+      case "PARIALY_PAID":
+        return "warning"
+      case "PAID":
+        return "info"
+
+      default:
+        return "success"
+    }
   }
 
   selectAll($event) {
@@ -76,6 +101,8 @@ export class ListReservationComponent implements OnInit {
     }
     this.setSelectAllState();
   }
+  goToDetail(id: number){
+    this.router.navigate([`/app/reservation/`+id]);
+  }
 
-  
 }

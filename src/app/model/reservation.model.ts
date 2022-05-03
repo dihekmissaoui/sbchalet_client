@@ -5,7 +5,8 @@ export interface IReservation {
   id?: number;
   dateDeDebut?: Date;
   dateDeDefin?: Date;
-  chalet?: number,
+  chaletObj?: IChalet,
+  chalet?: IChalet,
   nbNuites?: number,
   totalPrix?: number,
   user?: IUser;
@@ -13,4 +14,6 @@ export interface IReservation {
   nbEnfant?: number;
   nbAnimal?: number;
   status?: string;
+  colorStatus?: string;
+  chaletId?: number;
 }
