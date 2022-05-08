@@ -31,4 +31,8 @@ export class ChaletService {
   patch(id: number, payload: IChalet): Observable<IChalet> {
     return this.httpClient.patch(`${environment.serverUrl}/api/chalet/${id}`, payload);
   }
+
+  delete(id): Observable<Response> {
+    return this.httpClient.delete<Response>(`${environment.serverUrl}/api/chalet/${id}`);
+  }
 }

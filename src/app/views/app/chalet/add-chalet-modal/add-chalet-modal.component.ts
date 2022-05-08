@@ -60,7 +60,6 @@ export class AddChaletModalComponent implements OnInit {
         
     })
     this.sharedObjectService.currentChaletForUpdate.subscribe(res=>{
-      console.log('res:',res)
       this.chlaetForUpdate = res;
       if (!this.chlaetForUpdate) {
         this.chaletForm = new FormGroup({
@@ -113,12 +112,14 @@ export class AddChaletModalComponent implements OnInit {
     }
     this.isLoading = true;
     if(this.isEditMode){
+      console.log('chalet:', this.chalet);
       this.chaletService.patch(this.chlaetForUpdate.id, this.chalet).subscribe(res=>{
         this.isLoading = false;
         this.updatedChalet.emit(res);
         this.modalRef.hide();
       });
     }else{
+      console.log('chalet:', this.chalet);
       this.chaletService.save(this.chalet).subscribe(res => {
         this.isLoading = false;
         this.savedChalet.emit(res);
@@ -127,10 +128,8 @@ export class AddChaletModalComponent implements OnInit {
     }
   }
   onUploadError($event): void {
-    console.log('error: ', $event)
   }
   onUploadSuccess($event): void {
     this.imgs.push({ id: $event[1].id })
-    console.log('images', this.chalet.images);
   }
 }

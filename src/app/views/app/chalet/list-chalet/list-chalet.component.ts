@@ -18,7 +18,7 @@ export class ListChaletComponent implements OnInit {
   selectAllState = "";
   chaletForUpdate: IChalet;
   selected: IChalet[] = [];
-  data: IChalet[] = [];
+  data: IChalet[];
   currentPage = 1;
   itemsPerPage = 8;
   search = "";
@@ -40,12 +40,7 @@ export class ListChaletComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadData(
-      this.itemsPerPage,
-      this.currentPage,
-      this.search,
-      this.orderBy
-    );
+      this.loadData(this.itemsPerPage, this.currentPage, this.search, this.orderBy);
   }
 
   loadData(
@@ -132,12 +127,26 @@ export class ListChaletComponent implements OnInit {
     const val = event.target.value.toLowerCase().trim();
     this.loadData(this.itemsPerPage, 1, val, this.orderBy);
   }
-  
+
   onContextMenuClick(action: string, item: IChalet) {
-    this.chaletForUpdate = item;
-    this.updateModalRef.show();
-    this.sharedObjectService.changeCurrenIsChaletInEditMode(true),
-    this.sharedObjectService.changeCurrentChaletForUpdate(item);
+    if (action == 'modifier') {
+      this.chaletForUpdate = item;
+      this.updateModalRef.show();
+      this.sharedObjectService.changeCurrenIsChaletInEditMode(true),
+        this.sharedObjectService.changeCurrentChaletForUpdate(item);
+    }
+    if (action == 'supprimer') {
+      this.chaletService.delete(item.id).subscribe(res => {
+
+        this.data = [];
+        this.loadData(
+          this.itemsPerPage,
+          this.currentPage,
+          this.search,
+          this.orderBy
+        );
+      })
+    }
   }
 
   goToDetail(id: string): void {
@@ -145,15 +154,21 @@ export class ListChaletComponent implements OnInit {
   }
 
   getSavedChalet($event): void {
-    this.data.push($event);
+    this.data = [];
+    this.loadData(
+      this.itemsPerPage,
+      this.currentPage,
+      this.search,
+      this.orderBy
+    );
   }
-  getUpdatedChalet($event): void{
-    this.data =  [];
-      this.loadData(
-        this.itemsPerPage,
-        this.currentPage,
-        this.search,
-        this.orderBy
-      );
+  getUpdatedChalet($event): void {
+    this.data = [];
+    this.loadData(
+      this.itemsPerPage,
+      this.currentPage,
+      this.search,
+      this.orderBy
+    );
   }
 }

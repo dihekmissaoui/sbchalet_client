@@ -11,11 +11,16 @@
 <context-menu #basicMenu>
   <ng-template contextMenuItem let-item (execute)="onContextMenuClick('modifier',$event.item)">
     <i class="simple-icon-docs mr-1"></i> <span>Modifier</span>
+    
   </ng-template>
+  <!-- <ng-template contextMenuItem let-item (execute)="onContextMenuClick('supprimer',$event.item)">
+    <i class="simple-icon-docs mr-1"></i> <span>Supprimer</span>
+  </ng-template> -->
+  
 </context-menu>
-<ng-container *ngIf="data.length; else loading">
-
-  <div class="row">
+<ng-container *ngIf="data; else loading">
+  <ng-container *ngIf="data.length > 0 ; else noChalet">
+  <div class="row"  >
     <div class="col-12 list" *ngIf="displayMode==='list'">
       <div [ngClass]="{'card d-flex flex-row mb-3': true, 'active':isSelected(p)}" *ngFor="let p of data; let i=index"
         [contextMenu]="basicMenu" [contextMenuSubject]="p">
@@ -97,6 +102,19 @@
       </pagination>
     </div>
   </div>
+</ng-container>
+  <ng-template #noChalet>
+    <div class="text-center">
+      <!-- <div class="spinner-border text-primary" role="status" > -->
+        <img src="/assets/img/empty_data.png" alt="">
+        <p>
+          Pas de Chalets inscrits dans notre plateforme pour l'instant
+        </p>
+      <!-- </div> -->
+    </div>
+  </ng-template>
+
+
 </ng-container>
 <ng-template #loading>
   <div class="loading"></div>
