@@ -17,14 +17,20 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { ChaletRoutingModule } from './chalet-routing.module';
 import { DetailChaletComponent } from './detail-chalet/detail-chalet.component';
 import { ListChaletComponent } from './list-chalet/list-chalet.component';
+import { AddChaletModalComponent } from './add-chalet-modal/add-chalet-modal.component';
 
+import { DropzoneModule } from 'ngx-dropzone-wrapper';
 
 
 
 
 
 @NgModule({
-  declarations: [ListChaletComponent, DetailChaletComponent],
+  declarations: [
+    ListChaletComponent,
+    DetailChaletComponent,
+    AddChaletModalComponent,
+  ],
   imports: [
     SharedModule,
     ChaletRoutingModule,
@@ -50,8 +56,9 @@ import { ListChaletComponent } from './list-chalet/list-chalet.component';
     // NgxGlideModule,
     NgxGalleryModule,
     BsDatepickerModule.forRoot(),
-    UiModalsContainersModule
-    
+    UiModalsContainersModule,
+    DropzoneModule
+
   ],
   providers: [DatePipe, ReservationService],
   exports: [DetailChaletComponent]

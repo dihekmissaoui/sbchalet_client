@@ -1,0 +1,95 @@
+<ng-template #template>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left" *ngIf="isEditMode">Modifier le chalet</h4>
+        <h4 class="modal-title pull-left" *ngIf="!isEditMode">Ajouter un nouveau chalet</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <ng-container *ngIf="!isLoading; else loading">
+        <form [formGroup]="chaletForm" #form="ngForm" (ngSubmit)="onSubmit()" novalidate class="tooltip-label-right">
+            <div class="form-group">
+                <label>Description</label>
+                <input type="text" class="form-control" name="description" formControlName="description">
+                <div *ngIf="chaletForm.get('description')?.errors?.required && form.submitted" class="invalid-tooltip">
+                    description est obligatoire!</div>
+            </div>
+            <div class="form-group">
+                <label>Adresse</label>
+                <input type="text" class="form-control" name="adresse" formControlName="adresse">
+                <div *ngIf="chaletForm.get('adresse')?.errors?.required && form.submitted" class="invalid-tooltip">
+                    adresse est obligatoire!</div>
+            </div>
+
+            <div class="form-group">
+                <label>Prix unitaire de la nuilté</label>
+                <input type="number" class="form-control" name="prix" formControlName="prix">
+                <div *ngIf="chaletForm.get('prix')?.errors?.required && form.submitted" class="invalid-tooltip">prix est
+                    obligatoire!</div>
+            </div>
+
+            <div class="form-group">
+                <label>Etat</label>
+                <input type="text" class="form-control" name="etat" formControlName="etat">
+                <div *ngIf="chaletForm.get('etat')?.errors?.required && form.submitted" class="invalid-tooltip">etat est
+                    obligatoire!</div>
+            </div>
+            <div class="form-group">
+                <label>ville</label>
+                <input type="text" class="form-control" name="ville" formControlName="ville">
+                <div *ngIf="chaletForm.get('ville')?.errors?.required && form.submitted" class="invalid-tooltip">ville
+                    est obligatoire!</div>
+            </div>
+            <div class="form-group">
+                <label>CodeZip</label>
+                <input type="number" class="form-control" name="codeZip" formControlName="codeZip">
+                <small>Seuelement des chiffres</small>
+                <div *ngIf="chaletForm.get('codeZip')?.errors?.required && form.submitted" class="invalid-tooltip">
+                    codeZip est obligatoire!</div>
+            </div>
+            <div class="form-group">
+                <label>Nombre maximal d'Adultes</label>
+                <input type="number" class="form-control" name="maxAdulte" formControlName="maxAdulte">
+                <small>Seuelement des chiffres</small>
+                <div *ngIf="chaletForm.get('maxAdulte')?.errors?.required && form.submitted" class="invalid-tooltip">le
+                    nombre maximal des adultes est obligatoire!</div>
+            </div>
+            <div class="form-group">
+                <label>Nombre maxilam des enfants</label>
+                <input type="number" class="form-control" name="maxEnfant" formControlName="maxEnfant">
+                <small>Seuelement des chiffres</small>
+                <div *ngIf="chaletForm.get('maxEnfant')?.errors?.required && form.submitted" class="invalid-tooltip">le
+                    nombre maximal des enfants est obligatoire!</div>
+            </div>
+            <div class="form-group">
+                <label>Nombre maxilam de bébé(s)</label>
+                <input type="number" class="form-control" name="maxBebe" formControlName="maxBebe">
+                <small>Seuelement des chiffres</small>
+                <div *ngIf="chaletForm.get('maxBebe')?.errors?.required && form.submitted" class="invalid-tooltip">le
+                    nombre maximal des bébés est obligatoire!</div>
+            </div>
+            <div class="form-group">
+                <label>Nombre maxilam d'anmimal(aux)</label>
+                <input type="number" class="form-control" name="maxAnimal" formControlName="maxAnimal">
+                <div *ngIf="chaletForm.get('maxAnimal')?.errors?.required && form.submitted" class="invalid-tooltip">le
+                    nombre maximal des animeaux est obligatoire!</div>
+            </div>
+            <div class="form-group">
+                <label>Attacher des images:</label>
+                <dropzone [config]="configDz" [message]="'form-components.dropzone-message' | translate" (error)="onUploadError($event)" (success)="onUploadSuccess($event)"></dropzone>
+            </div>
+
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" (click)="modalRef.hide()">Annuler</button>
+                <button *ngIf="!isEditMode" [disabled]="!form.valid && imgs.length " class="btn btn-primary" type="submit">Enregistrer</button>
+                <button *ngIf="isEditMode" [disabled]="!form.valid && imgs.length " class="btn btn-primary" type="submit">Modifier</button>
+            </div>
+        </form>
+    </ng-container>
+    <ng-template #loading>
+        <div class="loading"></div>
+    </ng-template>
+    </div>
+</ng-template>

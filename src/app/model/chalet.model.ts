@@ -4,11 +4,15 @@ import { IReservation } from "./reservation.model";
 export interface IChalet {
   id?: number;
   description?: string;
-  prix?: string;
   adresse?: string;
   etat?: string;
   ville?: string;
-  codeZip?: string;
+  codeZip?: number;
+  prix?: number;
+  maxAdulte?: number;
+  maxEnfant?: number;
+  maxBebe?: number;
+  maxAnimal?: number;
   reservations?: IReservation[];
   images?: Image[];
 }

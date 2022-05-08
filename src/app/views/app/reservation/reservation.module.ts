@@ -21,8 +21,8 @@ import { ChaletModule } from '../chalet/chalet.module';
 import { NgxGalleryModule } from 'ngx-gallery-9';
 import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { AddFactureModalComponent } from './facture/add-facture-modal/add-facture-modal.component';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 
 
@@ -35,6 +35,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     AddFactureModalComponent
   ],
   imports: [
+    NgxDatatableModule,
     SharedModule,
     ReservationRoutingModule,
     ComponentsCarouselModule,
@@ -63,7 +64,6 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     NgxGalleryModule,
     ChaletModule,
     DropzoneModule,
-    NgxDatatableModule,
     SortablejsModule
   ],
   providers: [
