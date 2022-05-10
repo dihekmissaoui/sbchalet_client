@@ -61,7 +61,7 @@ const data: IMenuItem[] = [
   },
   {
     id:'calendar',
-    icon:'iconsminds-calendar',
+    icon:'iconsminds-calendar-4',
     label:'menu.calendar',
     to:'/app/calendar',
   }
