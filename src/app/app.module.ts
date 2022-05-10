@@ -14,6 +14,7 @@ import { LayoutContainersModule } from './containers/layout/layout.containers.mo
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 
+
 registerLocaleData(localeFr, 'fr');
 
 @NgModule({
@@ -25,7 +26,7 @@ registerLocaleData(localeFr, 'fr');
     BrowserAnimationsModule,
     TranslateModule.forRoot(),
     HttpClientModule,
-    AngularFireModule.initializeApp(environment.firebase)
+    AngularFireModule.initializeApp(environment.firebase),
   ],
   declarations: [
     AppComponent,

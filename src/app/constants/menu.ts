@@ -58,6 +58,12 @@ const data: IMenuItem[] = [
     icon:'iconsminds-notepad',
     label:'menu.reservation',
     to:'/app/reservation',
+  },
+  {
+    id:'calendar',
+    icon:'iconsminds-calendar',
+    label:'menu.calendar',
+    to:'/app/calendar',
   }
 ];
 export default data;

@@ -11,6 +11,7 @@ const routes: Routes = [
             { path: 'vien', loadChildren: () => import('./vien/vien.module').then(m => m.VienModule) },
             { path: 'chalets', loadChildren: () => import('./chalet/chalet.module').then(m => m.ChaletModule) },
             { path: 'reservation', loadChildren: () => import('./reservation/reservation.module').then(m => m.ReservationModule) },
+            { path: 'calendar', loadChildren: () => import('./calendar/calendar.module').then(m => m.CalendarModule) },
             { path: 'second-menu', loadChildren: () => import('./second-menu/second-menu.module').then(m => m.SecondMenuModule) },
             { path: 'blank-page', component: BlankPageComponent },
         ]
